@@ -1,0 +1,57 @@
+<!-- Modal -->
+<div class="modal fade" id="modal-debug-blocks" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Route Information</h4>
+            </div>
+            <div class="modal-body">
+
+                <table class="table table-striped table-responsive">
+                    <thead>
+                    <tr>
+                        <th><?php echo $this->__('Parent') ?></th>
+                        <th><?php echo $this->__('Block Class') ?></th>
+                        <th><?php echo $this->__('Layout_Name') ?></th>
+                        <th><?php echo $this->__('Template') ?></th>
+                        <th><?php echo $this->__('State') ?></th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <?php foreach (Mage::getSingleton('debug/observer')->layoutBlocks as $_block) : ?>
+                        <tr>
+                            <td><?php echo $_block['parent'] ?></td>
+                            <td><input maxlength="40" value="<?php echo $_block['class'] ?>"</td>
+                            <td><?php echo $_block['layout_name'] ?></td>
+                            <td><?php echo $_block['template'] ?></td>
+                            <td><?php
+
+                                if ($_block['template'] != '') {
+                                    $templateFile = Mage::getBaseDir('design') . DS . $_block['template'];
+                                    $exist = true;
+                                    $btn   = 'Ok';
+                                    if (! file_exists($templateFile)) {
+                                        $exist = false;
+                                        $btn   = 'Error';
+                                    }
+                                }
+
+                                ?>
+                                <?php if($_block['template'] != '') : ?>
+                                    <button type="button" class="btn <?php echo ($exist) ? 'btn-success' : 'btn-danger'?>"><?php echo $btn ?></button>
+                                <?php endif; ?>
+                            </td>
+                        </tr>
+                    <?php endforeach ?>
+                    </tbody>
+                </table>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>

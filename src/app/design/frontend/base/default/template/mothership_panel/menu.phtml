@@ -1,0 +1,151 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category  Mothership
+ * @package   Mothership_Panel
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2015 Mothership GmbH
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.mothership.de/
+ */
+
+/**
+ * This is the default file for the menu panel
+ *
+ * @TODO: Move CSS AND JS TO HEAD
+ */
+$controller = Mage::registry('controller');
+$is_enabled = Mage::getStoreConfig('mothership_panel_general/general/enable');
+$request = $controller->getRequest();
+
+$fullControllerName = $request->getControllerModule() . '_' . str_replace(' ', '_', ucwords(str_replace('_', ' ', $request->getControllerName()))) . 'Controller';
+$rfClass = new ReflectionClass($fullControllerName);
+#return false;
+?>
+
+<!-- Latest compiled and minified CSS-->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap-theme.min.css">
+
+<!-- Latest compiled and minified JavaScript -->
+<script src="/skin/frontend/default/waketoolz/js/jquery-1.11.0.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+
+<style>
+    body {
+        padding-top: 50px;
+    }
+</style>
+
+<nav class="navbar navbar-inverse navbar-fixed-top">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="#">
+                <img alt="Brand" src="https://avatars1.githubusercontent.com/u/5824495?v=3&s=30">
+            </a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+            <ul class="nav navbar-nav">
+                <li class="active"><a href="#">Link <span class="sr-only">(current)</span></a></li>
+                <li><a href="#">Einstellungen</a></li>
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Beispiele <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#">Action</a></li>
+                        <li><a href="#">Another action</a></li>
+                        <li><a href="#">Something else here</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Separated link</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">One more separated link</a></li>
+                    </ul>
+                </li>
+
+                <li><a href="#" data-toggle="modal" data-target="#modal-debug-route"><?php echo $fullControllerName ?></a></li>
+
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+
+                <li><button type="button" class="btn btn-success navbar-btn">Drag'n'Drop</button></li>
+
+                <li class="dropdown">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">Debuging <span class="caret"></span></a>
+                    <ul class="dropdown-menu" role="menu">
+                        <?php // references Mothership_Panel/src/app/design/frontend/base/default/template/mothership_panel/debug/modules.phtml ?>
+                        <li><a href="#" data-toggle="modal" data-target="#modal-debug-modules">Modules</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#modal-debug-route">Route</a></li>
+                        <li><a href="#" data-toggle="modal" data-target="#modal-debug-blocks">Blocks</a></li>
+                        <li class="divider"></li>
+                        <li><a href="#">Logout</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>
+
+<?php echo $this->getChildHtml('mothership_panel_modules'); ?>
+<?php echo $this->getChildHtml('mothership_panel_route'); ?>
+<?php echo $this->getChildHtml('mothership_panel_blocks'); ?>
+
+<script type="text/javascript">
+    /**
+     * Oh rly! http://stackoverflow.com/questions/19139063/twitter-bootstrap-3-dropdown-menu-disappears-when-used-with-prototype-js
+     */
+    (function() {
+        var isBootstrapEvent = false;
+        if (window.jQuery) {
+            var all = jQuery('*');
+            jQuery.each(['hide.bs.dropdown',
+                'hide.bs.collapse',
+                'hide.bs.tab',
+                'hide.bs.modal',
+                'hide.bs.tooltip',
+                'hide.bs.popover'], function(index, eventName) {
+                all.on(eventName, function( event ) {
+                    isBootstrapEvent = true;
+                });
+            });
+        }
+        var originalHide = Element.hide;
+        Element.addMethods({
+            hide: function(element) {
+                if(isBootstrapEvent) {
+                    isBootstrapEvent = false;
+                    return element;
+                }
+                return originalHide(element);
+            }
+        });
+    })();
+</script>
+

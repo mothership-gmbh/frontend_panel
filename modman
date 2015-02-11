@@ -1,0 +1,6 @@
+src/app/code/community/Mothership/Panel/                                        app/code/community/Mothership/Panel/
+src/app/design/frontend/base/default/template/mothership_panel                  app/design/frontend/base/default/template/mothership_panel
+src/app/design/frontend/base/default/layout/mothership_panel.xml                app/design/frontend/base/default/layout/mothership_panel.xml
+src/app/etc/modules/Mothership_Panel.xml                                        app/etc/modules/Mothership_Panel.xml
+
+src/skin/frontend/base/default/mothership/panel                                 skin/frontend/base/default/mothership/panel

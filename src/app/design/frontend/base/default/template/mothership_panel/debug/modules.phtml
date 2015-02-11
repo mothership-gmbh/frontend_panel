@@ -1,0 +1,92 @@
+<?php
+/**
+ * Magento
+ *
+ * NOTICE OF LICENSE
+ *
+ * This source file is subject to the Open Software License (OSL 3.0)
+ * that is bundled with this package in the file LICENSE.txt.
+ * It is also available through the world-wide-web at this URL:
+ * http://opensource.org/licenses/osl-3.0.php
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to license@magentocommerce.com so we can send you a copy immediately.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade Magento to newer
+ * versions in the future. If you wish to customize Magento for your
+ * needs please refer to http://www.magentocommerce.com for more information.
+ *
+ * @category  Mothership
+ * @package   Mothership_Panel
+ * @author    Don Bosco van Hoi <vanhoi@mothership.de>
+ * @copyright 2015 Mothership GmbH
+ * @license   http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ * @link      http://www.mothership.de/
+ */
+
+/* @var $this Mothership_Panel_Block_Debug_Modules */
+$modules = $this->getAll();
+?>
+
+<!-- Modal -->
+<div class="modal fade" id="modal-debug-modules" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Module Information</h4>
+            </div>
+            <div class="modal-body">
+
+                <div role="tabpanel">
+
+                    <!-- Nav tabs -->
+                    <ul class="nav nav-tabs" role="tablist">
+                        <?php foreach ($modules AS $code_pool => $_modules) :?>
+                            <li role="presentation"><a href="#<?php echo $code_pool ?>" aria-controls="home" role="tab" data-toggle="tab"><?php echo $code_pool ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+
+                    <!-- Tab panes -->
+                    <div class="tab-content">
+                        <?php foreach ($modules AS $code_pool => $_modules) :?>
+                            <div role="tabpanel" class="tab-pane" id="<?php echo $code_pool ?>">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th><?php echo $this->__("Module") ?></th>
+                                            <th><?php echo $this->__("Version") ?></th>
+                                            <th><?php echo $this->__("Status") ?></th>
+                                            <th><?php echo $this->__("Actions") ?></th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    <?php foreach ($_modules as $_module) : ?>
+                                        <tr>
+                                            <td><?php echo $_module['module'] ?></td>
+                                            <td><?php echo $_module['version'] ?></td>
+                                            <td>
+                                                <button type="button" class="btn <?php echo ($_module['active'] == 'true') ? 'btn-success' : 'btn-danger'?>"><?php echo $_module['active'] ?></button>
+                                            </td>
+                                            <td><a class="remoteCall" href="<?php echo Mage::getUrl('debug/index/toggleModuleStatus', array('_query' => array('module' => $item['module']))) ?>">Toggle Status</a><td>
+                                        </tr>
+                                    <?php endforeach ?>
+                                    </tbody>
+                                </table>
+                            </div>
+                        <?php endforeach; ?>
+
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
